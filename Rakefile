@@ -12,14 +12,14 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "lolita-list-edit"
+  gem.name = "lolita-editable-list"
   gem.homepage = "http://github.com/ithouse/lolita-list-edit"
   gem.license = "MIT"
   gem.summary = "List inline editing for Lolita"
   gem.description = "With this gem you are able to change content right on the list table, changes will be saved through ajax call."
   gem.email = "gatis@ithouse.lv"
-  gem.authors = ["Gatis Tomsons"]
-  gem.add_runtime_dependency 'lolita', '~> 3.0.5'
+  gem.authors = ["IT House (Latvia)"]
+  gem.add_runtime_dependency 'lolita', '~> 3.0.7'
   gem.add_development_dependency 'rspec', '~> 2.5.0'
 end
 Jeweler::RubygemsDotOrgTasks.new

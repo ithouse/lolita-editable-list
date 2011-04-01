@@ -9,37 +9,38 @@
 </div>
 <%= render_component :"lolita/list", :paginator,:page=>page, :columns=>list.columns %>
 </div>
+
+<% content_for :style do %>
+  <%= javascript_include_tag "editable" %>
+<% end %>
+
 <script type="text/javascript">
-function save_cell(id,name,value){
-  var url = "/lolita/<%= lolita_mapping.plural %>/";
+function save_cell(name,path,input){
   var data = {
-    id: id,
     authenticity_token: '<%= form_authenticity_token %>',
     <%= lolita_mapping.name %>: {}
   }
-  data['<%= lolita_mapping.name %>'][name] = value;
-  $('#e_'+id+'_'+name+'_input').attr('disabled', true);
+  data['<%= lolita_mapping.name %>'][name] = $(input).val().trim();
+  $(input).attr('disabled', true);
   $.ajax({
     type: 'PUT',
-    url: url+ id,
+    url: path,
     data: data,
     dataType: 'json',
     success: function(data){
-      $('#e_'+id+'_'+name).html(data['<%= lolita_mapping.name %>'][name])
+      $(input).parent().html(data['<%= lolita_mapping.name %>'][name]);
     },
     error: function(){
-      $('#e_'+id+'_'+name+'_input').addClass("error").attr('disabled', false);
-
+      $(input).addClass("error").attr('disabled', false);
     }
   });
 }
 $('td.editable').live('click',function(){
-  if($('#'+$(this).attr("id")+'_input').size() == 0){
-    var m = $(this).attr("id").match(/e_(\d+)_(.*)/)
-    var id      = m[1];
-    var name    = m[2];
+  if($(this).find('input').size() == 0){
+    var name    = $(this).attr('data-name');
     var value   = $(this).html().trim();
-    var input   = $('<input type="text" name="'+name+'" id="'+$(this).attr("id")+'_input" value="'+value+'"/>');
+    var path    = $(this).attr('data-path');
+    var input   = $('<input type="text" name="'+name+'" value="'+value+'"/>');
     input.css('width',$(this).width()+'px');
     $(this).html("");
     $(this).append(input);
@@ -52,7 +53,7 @@ $('td.editable').live('click',function(){
       if(e.keyCode == 27){
         input.trigger('blur');
       }else if(e.keyCode == 13){
-        save_cell(id,name,input.val());
+        save_cell(name,path,this);
       }
     });
   }

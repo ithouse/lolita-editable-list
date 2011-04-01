@@ -1,3 +1,3 @@
-<td id="e_<%= record.id%>_<%= name %>" class="<%= record.class.lolita.list.editable.columns.include?(name) ? 'editable' : '' %>">
-  <%= value.to_s %>
+<td data-name="<%= name %>" data-path="<%= lolita_resource_path(:id => record.id) %>" class="<%= record.class.lolita.list.editable.columns.include?(name) ? 'editable' : '' %>">
+  <%= value %>
 </td>
