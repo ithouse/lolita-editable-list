@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
     "lib/lolita-editable-list/configuration/editable_list.rb",
     "lib/lolita-editable-list/configuration/list.rb",
     "lib/lolita-editable-list/version.rb",
+    "lolita-editable-list.gemspec",
     "public/stylesheets/lolita/editable.css",
     "spec/configuration/editable_list_spec.rb",
     "spec/factories/post.rb",
