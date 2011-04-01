@@ -1,23 +1,60 @@
 <div class="box">
   <%= render_component :"lolita/list", :title %>
   <%= render_component :"lolita/list", :new_resource%>
-  <div class="list">
-    <table>
-      <%= render_component :"lolita/list", :header, :columns=>list.columns %>
-      <%= render_component :"lolita/list", :body, :page=>page,:columns=>list.columns %>
-    </table>
-  </div>
-  <%= render_component :"lolita/list", :paginator,:page=>page, :columns=>list.columns %>
+<div class="list">
+<table>
+  <%= render_component :"lolita/list", :header, :columns=>list.columns %>
+  <%= render_component :"lolita/list", :body, :page=>page,:columns=>list.columns %>
+</table>
+</div>
+<%= render_component :"lolita/list", :paginator,:page=>page, :columns=>list.columns %>
 </div>
 <script type="text/javascript">
+function save_cell(id,name,value){
+  var url = "/lolita/<%= lolita_mapping.plural %>/";
+  var data = {
+    id: id,
+    authenticity_token: '<%= form_authenticity_token %>',
+    <%= lolita_mapping.name %>: {}
+  }
+  data['<%= lolita_mapping.name %>'][name] = value;
+  $('#e_'+id+'_'+name+'_input').attr('disabled', true);
+  $.ajax({
+    type: 'PUT',
+    url: url+ id,
+    data: data,
+    dataType: 'json',
+    success: function(data){
+      $('#e_'+id+'_'+name).html(data['<%= lolita_mapping.name %>'][name])
+    },
+    error: function(){
+      $('#e_'+id+'_'+name+'_input').addClass("error").attr('disabled', false);
+
+    }
+  });
+}
 $('td.editable').live('click',function(){
   if($('#'+$(this).attr("id")+'_input').size() == 0){
-  var name = $(this).attr("id").match(/e_\d+_(.*)/)[1];
-  var value = $(this).html().trim();
-  var input = $('<input type="text" name="'+name+'" id="'+$(this).attr("id")+'_input" value="'+value+'"/>');
-  $(this).html("");
-  $(this).append(input);
-  input.focus();
+    var m = $(this).attr("id").match(/e_(\d+)_(.*)/)
+    var id      = m[1];
+    var name    = m[2];
+    var value   = $(this).html().trim();
+    var input   = $('<input type="text" name="'+name+'" id="'+$(this).attr("id")+'_input" value="'+value+'"/>');
+    input.css('width',$(this).width()+'px');
+    $(this).html("");
+    $(this).append(input);
+    input.focus();
+    var that = $(this);
+    input.blur(function(){
+      that.html(value);
+    });
+    input.keyup(function(e) {
+      if(e.keyCode == 27){
+        input.trigger('blur');
+      }else if(e.keyCode == 13){
+        save_cell(id,name,input.val());
+      }
+    });
   }
 });
 </script>

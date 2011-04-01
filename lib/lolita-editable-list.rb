@@ -22,11 +22,13 @@ module ActionView
     end
 
     def render_with_lolita_editable(options = {}, locals = {}, &block)
-      model = lolita_mapping.class_name.constantize
-      if model.lolita.list.editable?
-        if options[:partial] =~ /^\/components\/lolita\/list\/([a-z_]+)$/
-          if %w(body_cell display row).include?($1)
-            options[:partial] = "/components/lolita/list/editable/#{$1}"
+      if defined?(lolita_mapping)
+        model = lolita_mapping.class_name.constantize
+        if model.lolita.list.editable?
+          if options[:partial] =~ /^\/components\/lolita\/list\/([a-z_]+)$/
+            if %w(body_cell display row).include?($1)
+              options[:partial] = "/components/lolita/list/editable/#{$1}"
+            end
           end
         end
       end
