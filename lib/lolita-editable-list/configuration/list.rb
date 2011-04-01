@@ -2,8 +2,12 @@ module Lolita
   module Configuration
     class List
       lolita_accessor :editable
-      def editable(*args, &block)
-        @editable ||= Lolita::Configuration::EditableList.new(@dbi,*args, &block)
+      def is_editable(*args, &block)
+        @editable ||= Lolita::Configuration::EditableList.new(self,*args, &block)
+      end
+
+      def editable?
+        self.editable
       end
     end
   end

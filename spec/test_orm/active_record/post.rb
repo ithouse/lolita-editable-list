@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
 
   lolita do
     list do
-      editable
+      is_editable
     end
   end
 end

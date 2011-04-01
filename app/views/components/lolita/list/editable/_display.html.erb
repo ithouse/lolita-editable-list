@@ -1,0 +1,23 @@
+<div class="box">
+  <%= render_component :"lolita/list", :title %>
+  <%= render_component :"lolita/list", :new_resource%>
+  <div class="list">
+    <table>
+      <%= render_component :"lolita/list", :header, :columns=>list.columns %>
+      <%= render_component :"lolita/list", :body, :page=>page,:columns=>list.columns %>
+    </table>
+  </div>
+  <%= render_component :"lolita/list", :paginator,:page=>page, :columns=>list.columns %>
+</div>
+<script type="text/javascript">
+$('td.editable').live('click',function(){
+  if($('#'+$(this).attr("id")+'_input').size() == 0){
+  var name = $(this).attr("id").match(/e_\d+_(.*)/)[1];
+  var value = $(this).html().trim();
+  var input = $('<input type="text" name="'+name+'" id="'+$(this).attr("id")+'_input" value="'+value+'"/>');
+  $(this).html("");
+  $(this).append(input);
+  input.focus();
+  }
+});
+</script>
